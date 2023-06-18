@@ -1,16 +1,17 @@
-import { ColorType } from "@/lib/styles";
+import { cn } from "@/lib/utils";
 
 type ButtonProps = {
-  background: ColorType;
   children: React.ReactNode;
+  className?: string;
 } & React.HTMLAttributes<HTMLButtonElement>;
 
-export default function Button({ background, children, ...rest }: ButtonProps) {
-  const bgColor = `bg-${background}`;
-
+export default function Button({ children, className, ...rest }: ButtonProps) {
   return (
     <button
-      className={`w-full py-[18px] rounded-[16px] text-white-100 ${bgColor}`}
+      className={cn(
+        "w-full py-[18px] rounded-[16px] text-white-100",
+        className
+      )}
       {...rest}
     >
       {children}
