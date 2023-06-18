@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Portal from "./Portal";
-import useClickOutSide from "@/hooks/useClickOutSide";
+import useClickOutSide from "@/hooks/useClickOutside";
 
 type ModalProps = {
   children: React.ReactNode;
