@@ -1,28 +1,67 @@
 "use client";
 
-import Link from "next/link";
-import Icon from "../ui/Icon";
 import NytimesCard from "../ui/NytimesCard";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getNytimes } from "@/hooks/hydration/hydratedNytimes";
+import { useEffect, useMemo } from "react";
+import { useInView } from "react-intersection-observer";
+import { CardSkeleton } from "../ui/CardSkeleton";
 
 export default function NytimesList() {
-  const {
-    data: nytimes,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["nytimes"],
-    queryFn: () => getNytimes(),
-  });
+  const { ref, inView } = useInView();
 
-  console.log(nytimes);
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["infinite-scroll-nytimes"],
+      queryFn: async ({ pageParam = 0 }) => {
+        const res = await getNytimes({ page: pageParam });
+        return res;
+      },
+      getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
+    });
+
+  const nytimes = useMemo(() => {
+    if (!data) return [];
+
+    return data.pages.flatMap((page) => page.nytimes);
+  }, [data]);
+
+  useEffect(() => {
+    if (!inView) return;
+    if (!hasNextPage) return;
+    if (!fetchNextPage) return;
+
+    fetchNextPage();
+  }, [fetchNextPage, hasNextPage, inView]);
+
+  // 처음에만 로딩 스켈레톤 10개 보여주기
+  // isFetchingNextPage이 처음에는 false이고, 이후 fetchNextPage 호출될때 true로 바뀜
+  if (!isFetchingNextPage && isFetching) {
+    return (
+      <section className="h-full grid grid-cols-1 gap-[8px] sm:grid-cols-2 lg:grid-cols-3 mx-[20px] my-[20px]">
+        {Array.from({ length: 10 }).map((_, idx) => (
+          <CardSkeleton key={idx} />
+        ))}
+      </section>
+    );
+  }
 
   return (
-    <section className="h-full grid grid-cols-1 gap-[8px] sm:grid-cols-2 lg:grid-cols-3 mx-[20px] my-[20px]">
-      {/* {nytimes?.map((card) => (
-        <NytimesCard key={card.id} card={card} />
-      ))} */}
-    </section>
+    <>
+      {nytimes.length > 0 ? (
+        <section className="h-full grid grid-cols-1 gap-[8px] sm:grid-cols-2 lg:grid-cols-3 mx-[20px] my-[20px]">
+          {nytimes.map((card) => (
+            <NytimesCard key={card.id} card={card} />
+          ))}
+
+          {hasNextPage &&
+            Array.from({ length: 2 }).map((_, idx) => (
+              <CardSkeleton key={idx} ref={idx === 0 ? ref : undefined} />
+            ))}
+        </section>
+      ) : (
+        <h2>데이터가 없습니다.</h2>
+      )}
+    </>
   );
 }

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Icon from "./Icon";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 type CardProps = {
   id: string;
@@ -32,10 +34,14 @@ export default function NytimesCard({ card }: { card: CardProps }) {
         <div className="flex justify-between text-[13px]">
           <div>
             <span className="mr-2">{card.source}</span>
-            <span>김정확 기자</span>
+            {/* <span>김정확 기자</span> */}
           </div>
           <div className="text-black-80">
-            <span>{card.pubDate}</span>
+            <span>
+              {format(new Date(card.pubDate), "yyyy.M.d.(EE)", {
+                locale: ko,
+              })}
+            </span>
           </div>
         </div>
       </Link>

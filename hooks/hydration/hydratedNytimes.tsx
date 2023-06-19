@@ -5,21 +5,43 @@ import { dehydrate, Hydrate } from "@tanstack/react-query";
 import NytimesList from "@/components/templates/NytimesList";
 import { Nytimes } from "@/types/Nytimes";
 
-export async function getNytimes() {
-  const res = await fetch("http://localhost:3000/api/nytimes/search");
-  const nytimes = (await res.json()) as Nytimes[];
+export async function getNytimes({ page = 0 }) {
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/nytimes/search?page=${page}`
+    );
+    const response = await res.json();
 
-  return nytimes;
+    const nytimes = response.response.docs.map((nytimes: any) => ({
+      id: nytimes._id,
+      headline: nytimes.headline.main,
+      webUrl: nytimes.web_url,
+      source: nytimes.source,
+      pubDate: nytimes.pub_date,
+    })) as Nytimes[];
+
+    const total = Math.min(response.response.meta.hits, 1000);
+
+    return {
+      nytimes,
+      pageInfo: {
+        total: total, // 최대 1000개
+        nextPage: total > response.response.meta.offset ? page + 1 : null,
+      },
+    };
+  } catch (e) {
+    throw new Error("error");
+  }
 }
 
-export default async function HydratedNytimes() {
-  const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(["nytimes"], getNytimes);
-  const dehydratedState = dehydrate(queryClient);
+// export default async function HydratedNytimes() {
+//   const queryClient = getQueryClient();
+//   await queryClient.prefetchQuery(["nytimes"], getNytimes);
+//   const dehydratedState = dehydrate(queryClient);
 
-  return (
-    <Hydrate state={dehydratedState}>
-      <NytimesList />
-    </Hydrate>
-  );
-}
+//   return (
+//     <Hydrate state={dehydratedState}>
+//       <NytimesList />
+//     </Hydrate>
+//   );
+// }

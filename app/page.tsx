@@ -1,7 +1,7 @@
 import Category from "@/components/templates/Category";
 import Footer from "@/components/templates/Footer";
-import HydratedNytimes, { getNytimes } from "@/hooks/hydration/hydratedNytimes";
-import { useQuery } from "@tanstack/react-query";
+import NytimesList from "@/components/templates/NytimesList";
+// import HydratedNytimes, { getNytimes } from "@/hooks/hydration/hydratedNytimes";
 
 export default function Home() {
   return (
@@ -9,8 +9,10 @@ export default function Home() {
       <Category />
       <hr className="bg-gray border-0 h-[1px]" />
 
-      {/* @ts-expect-error Server Component */}
-      <HydratedNytimes />
+      {/* @.ts-expect-error Server Component */}
+      {/* <HydratedNytimes /> */}
+
+      <NytimesList />
 
       <Footer />
     </main>
