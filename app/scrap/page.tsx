@@ -1,4 +1,4 @@
-import Cards from "@/components/templates/Cards";
+import Cards from "@/components/templates/NytimesList";
 import Category from "@/components/templates/Category";
 import Footer from "@/components/templates/Footer";
 import ScrapEmpty from "@/components/templates/ScrapEmpty";
