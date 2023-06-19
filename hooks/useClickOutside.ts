@@ -10,7 +10,7 @@ export default function useClickOutSide({ onClose }: Props) {
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
       // datepicker 선택 시 모달이 닫히는걸 방지
-      if ((e.target as Element).className.includes("react-datepicker")) {
+      if ((e.target as Element)?.className?.includes("react-datepicker")) {
         return;
       }
 
