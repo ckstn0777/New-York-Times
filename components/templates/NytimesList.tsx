@@ -6,9 +6,13 @@ import { getNytimes } from "@/hooks/hydration/hydratedNytimes";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { CardSkeleton } from "../ui/CardSkeleton";
+import useScrapHook from "@/hooks/useScrapHook";
 
 export default function NytimesList() {
   const { ref, inView } = useInView();
+
+  // const { headline } = useHomeFilter();
+  const { scrap, onScrap, onUnScrap } = useScrapHook();
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery({
@@ -51,7 +55,13 @@ export default function NytimesList() {
       {nytimes.length > 0 ? (
         <section className="h-full grid grid-cols-1 gap-[8px] sm:grid-cols-2 lg:grid-cols-3 mx-[20px] my-[20px]">
           {nytimes.map((card) => (
-            <NytimesCard key={card.id} card={card} />
+            <NytimesCard
+              key={card.id}
+              card={card}
+              isScraped={scrap.some((item) => item.id === card.id)}
+              onScrap={onScrap}
+              onUnScrap={onUnScrap}
+            />
           ))}
 
           {hasNextPage &&
