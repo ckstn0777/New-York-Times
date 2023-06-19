@@ -7,6 +7,7 @@ import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { CardSkeleton } from "../ui/CardSkeleton";
 import useScrapHook from "@/hooks/useScrapHook";
+import { Toaster } from "react-hot-toast";
 
 export default function NytimesList() {
   const { ref, inView } = useInView();
@@ -72,6 +73,8 @@ export default function NytimesList() {
       ) : (
         <h2>데이터가 없습니다.</h2>
       )}
+
+      <Toaster position="bottom-center" />
     </>
   );
 }
