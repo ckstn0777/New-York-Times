@@ -12,7 +12,7 @@ type CardProps = {
 
 export default function Cards({ cards }: { cards: CardProps[] }) {
   return (
-    <section className="grid grid-cols-1 gap-[8px] sm:grid-cols-2 lg:grid-cols-3 mx-[20px] my-[20px]">
+    <section className="h-full grid grid-cols-1 gap-[8px] sm:grid-cols-2 lg:grid-cols-3 mx-[20px] my-[20px]">
       {cards.map((card) => (
         <article key={card.id} className="bg-white-90 rounded-[8px]">
           <Link

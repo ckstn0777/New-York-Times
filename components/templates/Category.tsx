@@ -5,7 +5,7 @@ import FliterButton from "../ui/FliterButton";
 import FilterModal from "./FilterModal";
 
 export default function Category() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const onClose = () => {
     setIsModalOpen(false);

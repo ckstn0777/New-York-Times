@@ -3,7 +3,7 @@ import Icon from "../ui/Icon";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-black-100 sticky left-0 bottom-0 z-10 px-[80px] py-[20px] flex justify-between items-center rounded-[30px]">
+    <footer className="w-full bg-black-100 fixed left-0 bottom-0 z-10 px-[80px] py-[20px] flex justify-between items-center rounded-[30px]">
       <Link href="/" className="flex flex-col items-center">
         <Icon name="home" fill="white-100" className="mb-[10px]" />
         <p className="text-white-100 text-[10px] font-semibold ">홈</p>

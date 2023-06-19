@@ -4,7 +4,7 @@ import Footer from "@/components/templates/Footer";
 
 export default function Home() {
   return (
-    <main className="bg-bg-gray">
+    <main className="bg-bg-gray min-h-screen">
       <Category />
 
       <hr className="bg-gray border-0 h-[1px]" />
@@ -28,80 +28,9 @@ export default function Home() {
             pubDate: "2023.3.15. (월)",
             isScraped: true,
           },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
-          {
-            id: "2",
-            headline:
-              "국방부 “北, 화성-17 실패 만회하려 영상 짜깁기… 성공 조작”",
-            webUrl: "link",
-            source: "조선일보",
-            pubDate: "2023.3.15. (월)",
-            isScraped: true,
-          },
         ]}
       />
+
       <Footer />
     </main>
   );

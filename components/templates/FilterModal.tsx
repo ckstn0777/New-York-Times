@@ -1,4 +1,5 @@
 import Button from "../ui/Button";
+import DatePickerInput from "../ui/DatePickerInput";
 import FliterButton from "../ui/FliterButton";
 import Input from "../ui/Input";
 import Modal from "../ui/Modal";
@@ -12,9 +13,7 @@ export default function FilterModal({ onClose }: FilterModalProps) {
     <Modal onClose={onClose}>
       <form className="flex flex-col gap-10">
         <div className="flex flex-col gap-2">
-          <label htmlFor="headline" className="text-lg font-semibold">
-            헤드라인
-          </label>
+          <h3 className="text-lg font-semibold">헤드라인</h3>
           <Input
             id="headline"
             placeholder="검색하실 헤드라인을 입력해주세요."
@@ -22,10 +21,8 @@ export default function FilterModal({ onClose }: FilterModalProps) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="date" className="text-lg font-semibold">
-            날짜
-          </label>
-          <Input id="date" type="date" placeholder="날짜를 선택해주세요." />
+          <h3 className="text-lg font-semibold">날짜</h3>
+          <DatePickerInput />
         </div>
 
         <div className="flex flex-col gap-2">
