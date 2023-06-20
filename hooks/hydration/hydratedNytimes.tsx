@@ -2,10 +2,36 @@ import getQueryClient from "@/lib/getQueryClient";
 import { dehydrate, Hydrate } from "@tanstack/react-query";
 import NytimesList from "@/components/templates/NytimesList";
 import { Nytimes } from "@/types/Nytimes";
+import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
-export async function getNytimes({ page = 0 }) {
+type GetNytimesPrams = {
+  page: number;
+  headline: string;
+  pubDate: Date | string | null;
+  limit?: number;
+};
+
+export async function getNytimes({
+  page = 0,
+  headline,
+  pubDate,
+  limit = 10,
+}: GetNytimesPrams) {
   try {
-    const res = await fetch(`/api/nytimes/search?page=${page}`);
+    const headLinePrams = headline === "" ? "" : `&fq=headline:("${headline}")`;
+
+    const pubDatePrams =
+      pubDate === null
+        ? ""
+        : `&begin_date=${formatDate(pubDate, "yyyyMMdd")}&end_date=${formatDate(
+            pubDate,
+            "yyyyMMdd"
+          )}`;
+
+    const res = await fetch(
+      `/api/nytimes/search?page=${page}${headLinePrams}${pubDatePrams}`
+    );
     const response = await res.json();
 
     const nytimes = response.response.docs.map((nytimes: any) => ({
@@ -22,10 +48,12 @@ export async function getNytimes({ page = 0 }) {
       nytimes,
       pageInfo: {
         total: total, // 최대 1000개
-        nextPage: total > response.response.meta.offset ? page + 1 : null,
+        nextPage:
+          total > response.response.meta.offset + limit ? page + 1 : null,
       },
     };
   } catch (e) {
+    console.error(e);
     throw new Error("error");
   }
 }

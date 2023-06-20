@@ -1,4 +1,3 @@
-import Category from "@/components/templates/Category";
 import Footer from "@/components/templates/Footer";
 import dynamic from "next/dynamic";
 

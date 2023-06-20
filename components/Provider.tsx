@@ -14,6 +14,7 @@ function Providers({ children }: Props) {
       defaultOptions: {
         queries: {
           refetchOnWindowFocus: false,
+          retry: false,
         },
       },
     })

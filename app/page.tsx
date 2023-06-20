@@ -1,3 +1,4 @@
+import HomeCategoryContainer from "@/components/container/HomeCategoryContainer";
 import Category from "@/components/templates/Category";
 import Footer from "@/components/templates/Footer";
 import NytimesList from "@/components/templates/NytimesList";
@@ -6,8 +7,7 @@ import NytimesList from "@/components/templates/NytimesList";
 export default function Home() {
   return (
     <main className="bg-bg-gray min-h-screen">
-      <Category />
-      <hr className="bg-gray border-0 h-[1px]" />
+      <HomeCategoryContainer />
 
       {/* @.ts-expect-error Server Component */}
       {/* <HydratedNytimes /> */}

@@ -8,22 +8,29 @@ import { useInView } from "react-intersection-observer";
 import { CardSkeleton } from "../ui/CardSkeleton";
 import useScrapHook from "@/hooks/useScrapHook";
 import { Toaster } from "react-hot-toast";
+import { useHomeFilter } from "@/store/useHomeFilter";
 
 export default function NytimesList() {
   const { ref, inView } = useInView();
 
-  // const { headline } = useHomeFilter();
+  const { headline, pubDate } = useHomeFilter();
   const { scrap, onScrap, onUnScrap } = useScrapHook();
 
-  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["infinite-scroll-nytimes"],
-      queryFn: async ({ pageParam = 0 }) => {
-        const res = await getNytimes({ page: pageParam });
-        return res;
-      },
-      getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ["infinite-scroll-nytimes"],
+    queryFn: async ({ pageParam = 0 }) => {
+      const res = await getNytimes({ page: pageParam, headline, pubDate });
+      return res;
+    },
+    getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
+  });
 
   const nytimes = useMemo(() => {
     if (!data) return [];
@@ -38,6 +45,11 @@ export default function NytimesList() {
 
     fetchNextPage();
   }, [fetchNextPage, hasNextPage, inView]);
+
+  // filter가 바뀌면 react-query refetch
+  useEffect(() => {
+    refetch();
+  }, [headline, pubDate, refetch]);
 
   // 처음에만 로딩 스켈레톤 10개 보여주기
   // isFetchingNextPage이 처음에는 false이고, 이후 fetchNextPage 호출될때 true로 바뀜

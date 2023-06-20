@@ -1,6 +1,6 @@
 export type Filter = {
   headline: string;
-  pubDate: Date | null;
+  pubDate: Date | string | null;
   country: string[];
 };
 
