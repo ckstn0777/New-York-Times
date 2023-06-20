@@ -6,6 +6,7 @@ type FilterButtonProps = {
   leftIcon?: IconName;
   outline?: boolean;
   active?: boolean;
+  textEllipsis?: boolean;
 } & React.HTMLAttributes<HTMLButtonElement>;
 
 export default function FliterButton({
@@ -13,6 +14,7 @@ export default function FliterButton({
   leftIcon,
   outline,
   active,
+  textEllipsis,
   ...rest
 }: FilterButtonProps) {
   return (
@@ -21,12 +23,26 @@ export default function FliterButton({
       className={cn(
         "border border-gray rounded-[30px] text-black-80 flex justify-center items-center gap-[4px] px-[12px] pt-[6px] pb-[4px] ",
         outline && "border-primary text-primary",
-        active && "bg-primary-sub text-white-100 border-white-60"
+        active && "bg-primary-sub text-white-100 border-white-60",
+        textEllipsis && "flex-1 overflow-auto max-w-fit"
       )}
       {...rest}
     >
-      {leftIcon && <Icon name={leftIcon} fill="black-80" />}
-      <p className="text-sm  h-[24px] leading-[24px]">{text}</p>
+      {leftIcon && (
+        <Icon
+          name={leftIcon}
+          fill={outline ? "primary" : "black-80"}
+          className="min-w-fit"
+        />
+      )}
+      <p
+        className={cn(
+          "text-sm h-[24px] leading-[24px]",
+          textEllipsis && "text-ellipsis whitespace-nowrap overflow-hidden"
+        )}
+      >
+        {text}
+      </p>
     </button>
   );
 }

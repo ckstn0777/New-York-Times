@@ -3,42 +3,95 @@ import DatePickerInput from "../ui/DatePickerInput";
 import FliterButton from "../ui/FliterButton";
 import Input from "../ui/Input";
 import Modal from "../ui/Modal";
+import { useState } from "react";
+import { Filter, FliterStore } from "@/types/Filter";
+
+const FILTER_COUNTRIES = [
+  "대한민국",
+  "중국",
+  "일본",
+  "미국",
+  "북한",
+  "러시아",
+  "프랑스",
+  "영국",
+];
 
 type FilterModalProps = {
   onClose: () => void;
-};
+  setFilter: ({ headline, pubDate, country }: Filter) => void;
+} & FliterStore;
 
-export default function FilterModal({ onClose }: FilterModalProps) {
+export default function FilterModal({
+  onClose,
+  headline: headlineProp,
+  pubDate: pubDateProp,
+  country: countryProp,
+  setFilter,
+}: FilterModalProps) {
+  const [headline, setHeadline] = useState(headlineProp);
+  const [pubDate, setPubDate] = useState<Date | null>(pubDateProp);
+  const [countries, setCountries] = useState<string[]>(countryProp);
+
+  const onPubDateChange = (date: Date | null) => {
+    setPubDate(date);
+  };
+
+  // country filter on/off
+  const onCountryClick = (country: string) => {
+    if (countries.includes(country)) {
+      setCountries(countries.filter((c) => c !== country));
+    } else {
+      setCountries([...countries, country]);
+    }
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(headline, pubDate, countries);
+
+    setFilter({
+      headline,
+      pubDate,
+      country: countries,
+    });
+
+    onClose();
+  };
+
   return (
     <Modal onClose={onClose}>
-      <form className="flex flex-col gap-10">
+      <form className="flex flex-col gap-10" onSubmit={(e) => onSubmit(e)}>
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-semibold">헤드라인</h3>
           <Input
             id="headline"
             placeholder="검색하실 헤드라인을 입력해주세요."
+            value={headline}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setHeadline(e.target.value)
+            }
           />
         </div>
 
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-semibold">날짜</h3>
-          <DatePickerInput />
+          <DatePickerInput
+            selectedDate={pubDate}
+            onPubDateChange={onPubDateChange}
+          />
         </div>
 
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-semibold">국가</h3>
           <div className="flex flex-wrap gap-2">
-            {[
-              "대한민국",
-              "중국",
-              "일본",
-              "미국",
-              "북한",
-              "러시아",
-              "프랑스",
-              "영국",
-            ].map((country) => (
-              <FliterButton text={country} key={country} />
+            {FILTER_COUNTRIES.map((country) => (
+              <FliterButton
+                text={country}
+                key={country}
+                onClick={() => onCountryClick(country)}
+                active={countries?.includes(country)}
+              />
             ))}
           </div>
         </div>

@@ -1,4 +1,3 @@
-import Cards from "@/components/templates/NytimesList";
 import Category from "@/components/templates/Category";
 import Footer from "@/components/templates/Footer";
 import dynamic from "next/dynamic";
@@ -16,11 +15,17 @@ const NytimesScrapList = dynamic(
   }
 );
 
+const ScrapCategoryContainer = dynamic(
+  () => import("@/components/container/ScrapCategoryContainer"),
+  {
+    ssr: false,
+  }
+);
+
 export default function Scrap() {
   return (
     <main className="bg-bg-gray min-h-screen">
-      <Category />
-      <hr className="bg-gray border-0 h-[1px]" />
+      <ScrapCategoryContainer />
 
       <NytimesScrapList />
 

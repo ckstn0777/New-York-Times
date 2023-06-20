@@ -1,5 +1,3 @@
-import Cards from "@/components/templates/NytimesList";
-import Category from "@/components/templates/Category";
 import getQueryClient from "@/lib/getQueryClient";
 import { dehydrate, Hydrate } from "@tanstack/react-query";
 import NytimesList from "@/components/templates/NytimesList";
@@ -7,9 +5,7 @@ import { Nytimes } from "@/types/Nytimes";
 
 export async function getNytimes({ page = 0 }) {
   try {
-    const res = await fetch(
-      `http://localhost:3000/api/nytimes/search?page=${page}`
-    );
+    const res = await fetch(`/api/nytimes/search?page=${page}`);
     const response = await res.json();
 
     const nytimes = response.response.docs.map((nytimes: any) => ({
@@ -34,6 +30,7 @@ export async function getNytimes({ page = 0 }) {
   }
 }
 
+// NytimesList까지 SSR이 필요하다면 사용
 // export default async function HydratedNytimes() {
 //   const queryClient = getQueryClient();
 //   await queryClient.prefetchQuery(["nytimes"], getNytimes);
