@@ -13,7 +13,7 @@ import { useHomeFilter } from "@/store/useHomeFilter";
 export default function NytimesList() {
   const { ref, inView } = useInView();
 
-  const { headline, pubDate } = useHomeFilter();
+  const { headline, pubDate, country } = useHomeFilter();
   const { scrap, onScrap, onUnScrap } = useScrapHook();
 
   const {
@@ -26,10 +26,20 @@ export default function NytimesList() {
   } = useInfiniteQuery({
     queryKey: ["infinite-scroll-nytimes"],
     queryFn: async ({ pageParam = 0 }) => {
-      const res = await getNytimes({ page: pageParam, headline, pubDate });
+      const res = await getNytimes({
+        page: pageParam,
+        headline,
+        pubDate,
+        country,
+      });
       return res;
     },
-    getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.pageInfo.nextPage) {
+        return lastPage.pageInfo.nextPage;
+      }
+      return undefined;
+    },
   });
 
   const nytimes = useMemo(() => {
@@ -42,6 +52,7 @@ export default function NytimesList() {
     if (!inView) return;
     if (!hasNextPage) return;
     if (!fetchNextPage) return;
+    console.log("fetch next page");
 
     fetchNextPage();
   }, [fetchNextPage, hasNextPage, inView]);
@@ -49,7 +60,7 @@ export default function NytimesList() {
   // filter가 바뀌면 react-query refetch
   useEffect(() => {
     refetch();
-  }, [headline, pubDate, refetch]);
+  }, [headline, pubDate, country, refetch]);
 
   // 처음에만 로딩 스켈레톤 10개 보여주기
   // isFetchingNextPage이 처음에는 false이고, 이후 fetchNextPage 호출될때 true로 바뀜

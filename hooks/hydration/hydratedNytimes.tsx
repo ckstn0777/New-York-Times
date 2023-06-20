@@ -4,11 +4,13 @@ import NytimesList from "@/components/templates/NytimesList";
 import { Nytimes } from "@/types/Nytimes";
 import { format } from "date-fns";
 import { formatDate } from "@/lib/utils";
+import { FILTER_COUNTRIES } from "@/lib/country";
 
 type GetNytimesPrams = {
   page: number;
   headline: string;
   pubDate: Date | string | null;
+  country: string[];
   limit?: number;
 };
 
@@ -16,6 +18,7 @@ export async function getNytimes({
   page = 0,
   headline,
   pubDate,
+  country,
   limit = 10,
 }: GetNytimesPrams) {
   try {
@@ -29,8 +32,18 @@ export async function getNytimes({
             "yyyyMMdd"
           )}`;
 
+    const countryParams =
+      country.length === 0
+        ? ""
+        : `&fq=glocations:("${country
+            .map(
+              (c) =>
+                FILTER_COUNTRIES[c as unknown as keyof typeof FILTER_COUNTRIES]
+            )
+            .join(",")}")`;
+
     const res = await fetch(
-      `/api/nytimes/search?page=${page}${headLinePrams}${pubDatePrams}`
+      `/api/nytimes/search?page=${page}${headLinePrams}${pubDatePrams}${countryParams}&sort=newest`
     );
     const response = await res.json();
 
@@ -40,6 +53,7 @@ export async function getNytimes({
       webUrl: nytimes.web_url,
       source: nytimes.source,
       pubDate: nytimes.pub_date,
+      byline: nytimes.byline.original,
     })) as Nytimes[];
 
     const total = Math.min(response.response.meta.hits, 1000);

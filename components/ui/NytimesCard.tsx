@@ -39,14 +39,14 @@ export default function NytimesCard({
         </div>
       </div>
 
-      <div className="flex justify-between text-[13px]">
+      <div className="flex justify-between text-[13px] gap-2">
         <div>
           <span className="mr-2">{card.source}</span>
-          {/* <span>김정확 기자</span> */}
+          <span>{card.byline}</span>
         </div>
-        <div className="text-black-80">
+        <div className="text-black-80 flex-none">
           <span>
-            {format(new Date(card.pubDate), "yyyy.M.d.(EE)", {
+            {format(new Date(card.pubDate.split("T")[0]), "yyyy.M.d.(EE)", {
               locale: ko,
             })}
           </span>

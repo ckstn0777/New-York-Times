@@ -30,7 +30,14 @@ export default function Category({
           textEllipsis={true}
         />
         <FliterButton
-          text={pubDate === null ? "전체 날짜" : format(pubDate, "yyyy.MM.dd")}
+          text={
+            pubDate === null
+              ? "전체 날짜"
+              : format(
+                  typeof pubDate === "string" ? new Date(pubDate) : pubDate,
+                  "yyyy.MM.dd"
+                )
+          }
           leftIcon="calendarCheck"
           onClick={() => setIsModalOpen(true)}
           outline={pubDate !== null}

@@ -5,17 +5,7 @@ import Input from "../ui/Input";
 import Modal from "../ui/Modal";
 import { useState } from "react";
 import { Filter, FliterStore } from "@/types/Filter";
-
-const FILTER_COUNTRIES = [
-  "대한민국",
-  "중국",
-  "일본",
-  "미국",
-  "북한",
-  "러시아",
-  "프랑스",
-  "영국",
-];
+import { FILTER_COUNTRIES } from "@/lib/country";
 
 type FilterModalProps = {
   onClose: () => void;
@@ -30,7 +20,9 @@ export default function FilterModal({
   setFilter,
 }: FilterModalProps) {
   const [headline, setHeadline] = useState(headlineProp);
-  const [pubDate, setPubDate] = useState<Date | null>(pubDateProp);
+  const [pubDate, setPubDate] = useState<Date | null>(
+    typeof pubDateProp === "string" ? new Date(pubDateProp) : pubDateProp
+  );
   const [countries, setCountries] = useState<string[]>(countryProp);
 
   const onPubDateChange = (date: Date | null) => {
@@ -85,7 +77,7 @@ export default function FilterModal({
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-semibold">국가</h3>
           <div className="flex flex-wrap gap-2">
-            {FILTER_COUNTRIES.map((country) => (
+            {Object.keys(FILTER_COUNTRIES).map((country) => (
               <FliterButton
                 text={country}
                 key={country}

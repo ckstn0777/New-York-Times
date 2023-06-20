@@ -32,7 +32,10 @@ export default function NytimesScrapList() {
 
     return (
       searchHeadline(item.headline, headline) &&
-      isSameDate(new Date(item.pubDate), pubDate)
+      isSameDate(
+        new Date(item.pubDate),
+        typeof pubDate === "string" ? new Date(pubDate) : pubDate
+      )
     );
   });
 

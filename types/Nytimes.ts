@@ -4,4 +4,5 @@ export type Nytimes = {
   webUrl: string;
   source: string;
   pubDate: string;
+  byline: string;
 };
