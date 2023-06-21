@@ -10,6 +10,7 @@ import useScrapHook from "@/hooks/useScrapHook";
 import { Toaster } from "react-hot-toast";
 import { useHomeFilter } from "@/store/useHomeFilter";
 import NytimesEmpty from "./NytimesEmpty";
+import NytimesListError from "./NytimesListError";
 
 export default function NytimesList() {
   const { ref, inView } = useInView();
@@ -24,6 +25,7 @@ export default function NytimesList() {
     isFetching,
     isFetchingNextPage,
     refetch,
+    error,
   } = useInfiniteQuery({
     queryKey: ["infinite-scroll-nytimes"],
     queryFn: async ({ pageParam = 0 }) => {
@@ -42,6 +44,8 @@ export default function NytimesList() {
       return undefined;
     },
   });
+
+  console.log("error", error);
 
   const nytimes = useMemo(() => {
     if (!data) return [];
@@ -62,6 +66,15 @@ export default function NytimesList() {
   useEffect(() => {
     refetch();
   }, [headline, pubDate, country, refetch]);
+
+  if (error) {
+    return (
+      <NytimesListError
+        /* @ts-ignore */
+        errorMessage={error.message || "알 수 없는 에러가 발생하였습니다."}
+      />
+    );
+  }
 
   // 처음에만 로딩 스켈레톤 10개 보여주기
   // isFetchingNextPage이 처음에는 false이고, 이후 fetchNextPage 호출될때 true로 바뀜

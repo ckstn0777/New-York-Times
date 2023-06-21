@@ -5,6 +5,7 @@ import { Nytimes } from "@/types/Nytimes";
 import { format } from "date-fns";
 import { formatDate } from "@/lib/utils";
 import { FILTER_COUNTRIES } from "@/lib/country";
+import { TooManyRequestError } from "@/lib/error";
 
 type GetNytimesPrams = {
   page: number;
@@ -45,6 +46,15 @@ export async function getNytimes({
     const res = await fetch(
       `/api/nytimes/search?page=${page}${headLinePrams}${pubDatePrams}${countryParams}&sort=newest`
     );
+
+    if (!res.ok) {
+      // console.log(res.status, res.body, res.text, res.statusText);
+      if (res.status === 429) {
+        throw new TooManyRequestError(res.statusText);
+      }
+      throw new Error("error");
+    }
+
     const response = await res.json();
 
     const nytimes = response.response.docs.map((nytimes: any) => ({
@@ -66,9 +76,8 @@ export async function getNytimes({
           total > response.response.meta.offset + limit ? page + 1 : null,
       },
     };
-  } catch (e) {
-    console.error(e);
-    throw new Error("error");
+  } catch (err) {
+    throw err;
   }
 }
 
