@@ -9,6 +9,7 @@ import { CardSkeleton } from "../ui/CardSkeleton";
 import useScrapHook from "@/hooks/useScrapHook";
 import { Toaster } from "react-hot-toast";
 import { useHomeFilter } from "@/store/useHomeFilter";
+import NytimesEmpty from "./NytimesEmpty";
 
 export default function NytimesList() {
   const { ref, inView } = useInView();
@@ -94,7 +95,7 @@ export default function NytimesList() {
             ))}
         </section>
       ) : (
-        <h2>데이터가 없습니다.</h2>
+        <NytimesEmpty />
       )}
 
       <Toaster position="bottom-center" />
