@@ -50,7 +50,7 @@ export async function getNytimes({
     if (!res.ok) {
       // console.log(res.status, res.body, res.text, res.statusText);
       if (res.status === 429) {
-        throw new TooManyRequestError(res.statusText);
+        throw new TooManyRequestError(res.statusText || "Too Many Requests");
       }
       throw new Error("error");
     }
