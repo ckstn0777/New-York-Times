@@ -11,10 +11,6 @@ export default function NytimesScrapList() {
   const { scrap, onScrap, onUnScrap } = useScrapHook();
   const { headline, pubDate, country } = useScrapFilter();
 
-  if (scrap.length === 0) {
-    return <ScrapEmpty />;
-  }
-
   const filteredScrap = scrap.filter((item) => {
     // 헤드라인 검색 함수 - 간단 단어 검색정도...
     const searchHeadline = (a: string, b: string) => {
@@ -38,6 +34,10 @@ export default function NytimesScrapList() {
       )
     );
   });
+
+  if (filteredScrap.length === 0) {
+    return <ScrapEmpty />;
+  }
 
   return (
     <>

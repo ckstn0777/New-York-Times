@@ -32,12 +32,12 @@ export default function FliterButton({
         <Icon
           name={leftIcon}
           fill={outline ? "primary" : "black-80"}
-          className="min-w-fit"
+          className="basis-[16px]"
         />
       )}
       <p
         className={cn(
-          "text-sm h-[24px] leading-[24px]",
+          "text-sm h-[24px] leading-[24px] flex-1",
           textEllipsis && "text-ellipsis whitespace-nowrap overflow-hidden"
         )}
       >

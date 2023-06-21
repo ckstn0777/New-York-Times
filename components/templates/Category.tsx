@@ -21,7 +21,7 @@ export default function Category({
 
   return (
     <>
-      <div className="flex gap-[7px] bg-white-100 px-5 py-[13px]">
+      <div className="flex gap-[7px] bg-white-100 px-5 py-[13px] relative z-10">
         <FliterButton
           text={headline === "" ? "전체 헤드라인" : headline}
           leftIcon="search"
