@@ -63,6 +63,7 @@ export default function FilterModal({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setHeadline(e.target.value)
             }
+            onReset={() => setHeadline("")}
           />
         </div>
 
