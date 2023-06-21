@@ -40,7 +40,7 @@ export async function getNytimes({
               (c) =>
                 FILTER_COUNTRIES[c as unknown as keyof typeof FILTER_COUNTRIES]
             )
-            .join(",")}")`;
+            .join('","')}")`;
 
     const res = await fetch(
       `/api/nytimes/search?page=${page}${headLinePrams}${pubDatePrams}${countryParams}&sort=newest`
