@@ -5,4 +5,5 @@ export type Nytimes = {
   source: string;
   pubDate: string;
   byline: string;
+  glocations: string[];
 };

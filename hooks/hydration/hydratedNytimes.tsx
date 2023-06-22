@@ -48,7 +48,6 @@ export async function getNytimes({
     );
 
     if (!res.ok) {
-      // console.log(res.status, res.body, res.text, res.statusText);
       if (res.status === 429) {
         throw new TooManyRequestError(res.statusText || "Too Many Requests");
       }
@@ -64,6 +63,9 @@ export async function getNytimes({
       source: nytimes.source,
       pubDate: nytimes.pub_date,
       byline: nytimes.byline.original,
+      glocations: nytimes.keywords
+        .filter((k: any) => k.name === "glocations")
+        .map((k: any) => k.value),
     })) as Nytimes[];
 
     const total = Math.min(response.response.meta.hits, 1000);

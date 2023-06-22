@@ -6,6 +6,7 @@ import useScrapHook from "@/hooks/useScrapHook";
 import { Toaster } from "react-hot-toast";
 import { useScrapFilter } from "@/store/useScrapFilter";
 import { format } from "date-fns";
+import { FILTER_COUNTRIES } from "@/lib/country";
 
 export default function NytimesScrapList() {
   const { scrap, onScrap, onUnScrap } = useScrapHook();
@@ -24,13 +25,25 @@ export default function NytimesScrapList() {
       return format(a, "yyyy-MM-dd") === format(b, "yyyy-MM-dd");
     };
 
-    // 나라 비교 (?)
+    // 나라 비교
+    const isSameCountry = (a: string[], b: string[]) => {
+      if (b.length === 0) return true; // b가 빈 배열이면 전체
+      return a.some((item) => b.includes(item));
+    };
 
     return (
       searchHeadline(item.headline, headline) &&
-      isSameDate(
-        new Date(item.pubDate),
-        typeof pubDate === "string" ? new Date(pubDate) : pubDate
+        isSameDate(
+          new Date(item.pubDate),
+          typeof pubDate === "string" ? new Date(pubDate) : pubDate
+        ),
+      isSameCountry(
+        item.glocations.map((g) => g.toLowerCase()),
+        country.map((c) =>
+          FILTER_COUNTRIES[
+            c as unknown as keyof typeof FILTER_COUNTRIES
+          ]?.toLowerCase()
+        )
       )
     );
   });
