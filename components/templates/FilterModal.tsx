@@ -34,7 +34,10 @@ export default function FilterModal({
     if (countries.includes(country)) {
       setCountries(countries.filter((c) => c !== country));
     } else {
-      setCountries([...countries, country]);
+      const totalCountries = [...countries, country];
+      setCountries(
+        Object.keys(FILTER_COUNTRIES).filter((c) => totalCountries.includes(c))
+      );
     }
   };
 
