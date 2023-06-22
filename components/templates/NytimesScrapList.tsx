@@ -38,7 +38,7 @@ export default function NytimesScrapList() {
           typeof pubDate === "string" ? new Date(pubDate) : pubDate
         ),
       isSameCountry(
-        item.glocations.map((g) => g.toLowerCase()),
+        item.glocations?.map((g) => g.toLowerCase()),
         country.map((c) =>
           FILTER_COUNTRIES[
             c as unknown as keyof typeof FILTER_COUNTRIES
