@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Providers from "@/components/Provider";
 import "./globals.css";
 
@@ -13,6 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Head>
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </Head>
       <body className="">
         <Providers>
           {children}
