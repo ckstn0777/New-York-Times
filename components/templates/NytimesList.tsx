@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import { useHomeFilter } from "@/store/useHomeFilter";
 import NytimesEmpty from "./NytimesEmpty";
 import NytimesListError from "./NytimesListError";
+import { useDidMountEffect } from "@/hooks/useDidMountEffect";
 
 export default function NytimesList() {
   const { ref, inView } = useInView();
@@ -43,9 +44,8 @@ export default function NytimesList() {
       }
       return undefined;
     },
+    staleTime: 1000 * 60 * 5, // 5 minutes 동안 fresh 하게 유지
   });
-
-  console.log("error", error);
 
   const nytimes = useMemo(() => {
     if (!data) return [];
@@ -63,7 +63,7 @@ export default function NytimesList() {
   }, [fetchNextPage, hasNextPage, inView]);
 
   // filter가 바뀌면 react-query refetch
-  useEffect(() => {
+  useDidMountEffect(() => {
     refetch();
   }, [headline, pubDate, country, refetch]);
 
